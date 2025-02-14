@@ -1,0 +1,12 @@
+{
+  "name": "ris2", 
+  "version": "1.0.0", 
+  "description": "", 
+  "main": "ris2.js", 
+  "scripts": {
+    "start": "node ris2.js" 
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
