@@ -1,1 +1,0 @@
-worker: node  ris2.js

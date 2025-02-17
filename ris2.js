@@ -1,13 +1,12 @@
 const TelegramBot = require('node-telegram-bot-api');
+require('dotenv').config(); // Загружаем переменные окружения из .env
 
-// Замените 'YOUR_API_TOKEN_HERE' на ваш токен, полученный от BotFather
-const token = '7827802818:AAFPHML581a5SohcDCrhMQs1hIziGJzUv7k';
+// Получаем токен и ID админа из переменных окружения
+const token = process.env.TELEGRAM_BOT_TOKEN;
+const adminChatId = process.env.ADMIN_CHAT_ID; // Читаем ID из .env
 
 // Создаем экземпляр бота
 const bot = new TelegramBot(token, { polling: true });
-
-// Замените на ваш ID чата, куда будут отправляться сообщения
-const adminChatId = '7211817318'; // Ваш ID чата
 
 // Объект для хранения состояния пользователей
 const userStates = {};
@@ -32,7 +31,6 @@ bot.onText(/\/start/, (msg) => {
                         [
                             { text: 'Работодатели', callback_data: 'Работодатели' },
                             { text: 'Бизнес проекты', callback_data: 'Бизнес проекты' }
-                           
                         ],
                         [
                             { text: 'Поблагодарить', callback_data: 'thank_you' } // Кнопка "Поблагодарить"
@@ -51,6 +49,12 @@ bot.onText(/\/start/, (msg) => {
 bot.on('callback_query', (query) => {
     const chatId = query.message.chat.id;
     const category = query.data;
+
+    // Проверяем, было ли уже обработано это нажатие
+    if (userStates[chatId] !== undefined) {
+        bot.answerCallbackQuery(query.id, { text: 'Вы уже сделали выбор.', show_alert: true });
+        return;
+    }
 
     if (category === 'thank_you') {
         // Отправляем стикер и два сообщения в заданной последовательности
@@ -79,7 +83,7 @@ bot.on('message', (msg) => {
     if (userStates[chatId]) {
         const category = userStates[chatId];
         const userName = msg.from.first_name || 'Пользователь';
-        const userUsername = msg.from.username ? `(@${msg.from.username})` : ''; // Получаем юзернейм, если он есть
+        const userUsername = msg.from.username ? `(@${msg.from.username})` : '';
         const userMessage = msg.text;
 
         // Отправляем сообщение администратору
