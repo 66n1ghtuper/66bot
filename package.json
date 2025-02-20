@@ -2,12 +2,12 @@
   "name": "ris2",
   "version": "1.0.0",
   "description": "",
-  "main": "ris2.js",
-  "scripts": {
-    "start": "node ris2.js"
-  },
-  "dependencies": {
+  "main": "ris2.js", 
+   "dependencies": {
     "dotenv": "^16.4.7",
     "node-telegram-bot-api": "^0.66.0"
+  },
+  "scripts": {
+    "start": "node ris2.js"
   }
 }
